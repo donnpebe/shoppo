@@ -3,8 +3,9 @@ package promotioncondition
 import (
 	"testing"
 
-	"github.com/donnpebe/shoppo/pkg/domain"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/donnpebe/shoppo/pkg/domain"
 )
 
 func TestProductQuantityDiscountCondition_CalculateDiscount(t *testing.T) {
