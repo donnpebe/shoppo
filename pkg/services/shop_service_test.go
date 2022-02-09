@@ -409,7 +409,7 @@ func TestShopService_Checkout(t *testing.T) {
 			order := sut.CreateCart()
 
 			for _, item := range test.input.items {
-				sut.AddItemToCart(order.ID, item.productID, item.quantity)
+				_, _ = sut.AddItemToCart(order.ID, item.productID, item.quantity)
 			}
 
 			orderID := order.ID
