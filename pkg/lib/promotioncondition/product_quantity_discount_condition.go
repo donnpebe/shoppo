@@ -8,6 +8,7 @@ type ProductQuantityDiscount struct {
 	DiscountedQuantity int
 }
 
+// Applies to multiples of required quantity too
 func (cond ProductQuantityDiscount) CalculateDiscount(order *domain.Order) float64 {
 	for _, line := range order.Lines {
 		if line.ProductID == cond.ProductID {
