@@ -1,6 +1,7 @@
 package services
 
 import (
+	"math"
 	"sync"
 	"time"
 
@@ -146,7 +147,12 @@ func (service *ShopService) Checkout(orderID string) (totalAmount float64, err e
 		totalAmount += promotion.Condition.CalculateDiscount(order)
 	}
 
-	return totalAmount, nil
+	return round(totalAmount), nil
+}
+
+// Round to nearest 2 digit after deciaml point
+func round(k float64) float64 {
+	return math.Round(k*100) / 100
 }
 
 func findLineInOrder(order *domain.Order, productID string) (foundLine *domain.OrderLine, index int) {
