@@ -7,6 +7,7 @@
 
 vendor/
 tmp/
+build/
 
 # IDE specific files
 .vscode
