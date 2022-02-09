@@ -1,0 +1,146 @@
+type Query {
+    """
+    Get active order, will be null until first item added to order
+    """
+    activeOrder: Order
+    """
+    Get A list of products
+    """
+    products(options ProductListOptions): ProductList!
+    """
+    Get order based on the id
+    """
+    order(id: ID!) Order
+}
+
+type Mutation {
+    """
+    Add item to order and will automaticly create order id
+    for first time access to addItemToOrder and set the order to active
+    """
+    addItemToOrder(productId: ID!, quantity: Int!): Order! 
+    """
+    Remove order line from order
+    """
+    removeOrderLine(orderLineId: ID!): Order!
+    """
+    Sets the shipping address
+    """
+    setShippingAddress(input: CreateAddressInput!): Order!
+    """
+    Sets the billing address
+    """
+    setBillingAddress(input: CreateAddressInput!): Order!
+    """
+    Sets shipping method for this order
+    """
+    setOrderShippingMethod(shippingMethodId: ID!): Order!
+    """
+    Add a payment to this order
+    """
+    addPayment(input: PaymentInput!): Order!
+    """
+    Checkout the order
+    """
+    checkout: Order!
+}
+
+type Order {
+    id: ID!
+    customer: Customer
+    paymentType: String
+    orderStatus: OrderStatus
+    address: String
+    orderLines: [OrderLine]
+    shippingAddress: OrderAddress
+    billingAddress: OrderAddress
+    shippingMethod: ShippingMethod
+}
+
+type ShippingMethod {
+    id: ID!
+    code: String!
+    name: String!
+    description: String!
+}
+
+type OrderLine {
+    id: ID!
+    product: Product!
+    unitPrice: Float!
+    quantity: Int!
+}
+
+enum OrderStatus {
+    Created,
+    ArrangingPayment,
+    Paid,
+    Shipped,
+    Delivered,
+    Cancelled,
+}
+
+type OrderAddress {
+    fullName: String
+    company: String
+    streetLine: String
+    city: String
+    province: String
+    postalCode: String
+    country: String
+    phoneNumber: String
+}
+
+type Product {
+    id: ID!
+    name: String!
+    sku: String
+    unitPrice: Float!
+    quantity: Int!
+}
+
+type ProductList {
+    items: [Product]
+    totalItems: Int
+}
+
+input CreateAddressInput {
+    fullName: String
+    company: String
+    streetLine: String!
+    city: String!
+    province: String!
+    postalCode: String
+    country: String!
+    phoneNumber: String
+}
+
+input PaymentInput {
+    method: String!
+}
+
+input ProductListOptions {
+    skip: Int
+    limit: Int
+    filter: ProductFilterParameter
+}
+
+input ProductFilterParameter {
+    createdAt: DateOperators
+    updatedAt: DateOperators
+    name: StringOperators
+}
+
+input DateOperators {
+    eq: Date 
+    lt: Date 
+    lte: Date 
+    gt: Date 
+    gte: Date 
+}
+
+input StringOperators {
+    eq: String
+    ne: String
+    regex: String
+}
